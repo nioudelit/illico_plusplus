@@ -10,8 +10,8 @@ int main( ){
     
     settings.setGLVersion(3,2);
     settings.width = 800;
-    settings.height = 600;
-    settings.setPosition(ofVec2f(300,0));
+    settings.height = 480;
+    settings.setPosition(ofVec2f(0,0));
     //settings.multiMonitorFullScreen = true;
     //settings.windowMode = OF_FULLSCREEN;
     ofCreateWindow(settings);

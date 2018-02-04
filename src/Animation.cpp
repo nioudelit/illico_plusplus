@@ -18,7 +18,7 @@ void Animation::setup(int largeur_, int hauteur_, char toucheDAction, int identi
 void Animation::update(int key){
     if(key == toucheMaj){
         
-        /*FBO POUR RECUPRER CAPTURE SCREEN (TEXTURE)*/
+        /*FBO POUR RECUPERER CAPTURE SCREEN (TEXTURE)*/
         ofFbo tempfbo;
         tempfbo.allocate(largeur, hauteur, GL_RGBA);
         tempfbo.begin();
@@ -58,12 +58,12 @@ void Animation::draw(){
         shader.setUniform1f("s", ofMap(ofGetMouseY(), 0, ofGetWindowHeight(), 0.0, 1.0));
         shader.setUniform1f("b", 0.2);
         shader.setUniformTexture("tex0", images[compteur].getTexture(), id_);
-        images[compteur].draw(0, hauteur);
+        images[compteur].draw(largeur, 0);
         shader.end();
         
-        for(int i = 0; i < images.size(); i++){
-            images[i].draw(400, 150*i, 200, 150);
-        }
+        //for(int i = 0; i < images.size(); i++){
+          //  images[i].draw(largeur, hauteur/2*i, largeur/2, hauteur/2);
+        //}
     }
 }
 

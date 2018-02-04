@@ -20,6 +20,9 @@ Télécharger le programme. Si cela ne fonctionne pas, il faudra compiler le pro
 
 À voir selon optimisation [en rédaction]
 
+- https://github.com/openFrameworks-arm/Resonate2013Workshop
+- https://forum.openframeworks.cc/t/shaders-examples-not-working-on-rpi-with-of-0-9-7/25896
+
 ### Windows (Explications temporaires).
 
 Télécharger le programme. Si cela ne fonctionne pas, bin… tant pis. [en rédaction]
