@@ -1,4 +1,4 @@
-precision highp float
+precision highp float;
 
 // Recevoir Texture via OF
 uniform sampler2D tex0;
@@ -7,7 +7,7 @@ uniform float s;
 uniform float b;
 
 //Position envoyees par le vertex shader
-attribute vec2 varyingtexcoord;
+varying vec2 varyingtexcoord;
 
 //Notre fragment haut en couleurs
 //out vec4 outputColor;

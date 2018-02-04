@@ -6,9 +6,9 @@
 //========================================================================
 int main( ){
     
-    ofGLWindowSettings settings;
+    ofGLESWindowSettings settings;
     
-    settings.setGLVersion(3,2);
+    settings.glesVersion = 2;
     settings.width = 800;
     settings.height = 600;
     settings.setPosition(ofVec2f(300,0));
