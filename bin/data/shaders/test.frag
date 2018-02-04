@@ -1,16 +1,16 @@
-#version 150
+precision highp float
 
 // Recevoir Texture via OF
-uniform sampler2DRect tex0;
+uniform sampler2D tex0;
 uniform float h;
 uniform float s;
 uniform float b;
 
 //Position envoyees par le vertex shader
-in vec2 varyingtexcoord;
+attribute vec2 varyingtexcoord;
 
 //Notre fragment haut en couleurs
-out vec4 outputColor;
+//out vec4 outputColor;
 
 vec3 rgb2hsv(vec3 c){
     //https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
@@ -26,7 +26,7 @@ vec3 rgb2hsv(vec3 c){
 
 void main(){
 
-	vec4 col = texture(tex0, varyingtexcoord);
+	vec4 col = texture2D(tex0, varyingtexcoord);
 	vec3 vertReference = vec3(0.0, 1.0, 0.0);
 	vertReference = rgb2hsv(vertReference);
 
@@ -36,7 +36,7 @@ void main(){
 	   distance(texColorHSB.z, vertReference.z) >= b)
         	discard;
 	
-	outputColor = vec4(col);
+	gl_FragColor = vec4(col);
 
 	//float somme = col.r + col.g + col.b;
 	//float bright = somme * 0.33333;
