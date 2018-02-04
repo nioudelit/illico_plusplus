@@ -36,7 +36,7 @@ public:
     bool modeSuppr;
     bool vueCamera;
     bool sendData;
-    char raccourcis[5] = {'a', 'z', 'e', 'r', 't'};
+    char raccourcis[5] = {'q', 'w', 'e', 'r', 't'};
     
     shared_ptr<GuiApp> gui;
     
