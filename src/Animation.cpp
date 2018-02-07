@@ -6,6 +6,9 @@ Animation::Animation(){
 }
 
 void Animation::setup(int largeur_, int hauteur_, char toucheDAction, int identifiant){
+    images.clear();
+    compteur = 0;
+    
     largeur = largeur_;
     hauteur = hauteur_;
     touche = toucheDAction;
@@ -17,6 +20,7 @@ void Animation::setup(int largeur_, int hauteur_, char toucheDAction, int identi
 
 void Animation::update(int key, ofFbo capture){
     if(key == toucheMaj){
+        //images.setDefaultTextureIndex(capture);
         images.push_back(capture);
         seJoue = true;
     } else if (key == touche){
