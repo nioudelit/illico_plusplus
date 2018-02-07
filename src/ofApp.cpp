@@ -6,26 +6,44 @@ void ofApp::setup(){
     //CAMERA
     w = 400;
     h = 300;
-    modeSuppr = false;
-    vueCamera = false;
-    sendData = false;
     camera.initGrabber(w, h);
+    
+    //CAMERA DATA
+        //BUFFER
+    //cameraBuffer.allocate(w * h * 3, GL_STATIC_DRAW);
+        //FBO
+    cameraDataFbo.allocate(w, h, GL_RGB);
+    cameraDataFbo.begin();
+    ofClear(0);
+    cameraDataFbo.end();
     
     //BOUCLES
     for(int i = 0; i < n; i++){
         animation[i].setup(w, h, raccourcis[i], i);
     }
+    
+    //INIT COMMANDES
+    modeSuppr = false;
+    vueCamera = false;
+    sendData = false;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     camera.update();
+    //METTRE CONDITION ou APPELS FONCTIONS POUR ECONOMISER RASP
+    //if(camera.isFrameNew()){
+        //cameraDataFbo.begin();
+        //camera.draw(0, 0);
+        //cameraDataFbo.end();
+        //camera.getTexture().copyTo(cameraBuffer);
+    //}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(0);
-    camera.draw(0, 0);
+    camera.draw(w, 0);
     for(int i = 0; i < n; i++){
         animation[i].draw();
     }
@@ -43,7 +61,14 @@ void ofApp::keyPressed(int key){
 void ofApp::keyReleased(int key){
     if(modeSuppr == false){
         for(int i = 0; i < n; i++){
-            animation[i].update(key);
+            ofFbo injectionCamera;
+            injectionCamera.allocate(w, h);
+            injectionCamera.begin();
+            ofClear(0);
+            camera.draw(0, 0);
+            injectionCamera.end();
+            
+            animation[i].update(key, injectionCamera);
         }
     } else {
         for(int i = 0; i < n; i++){
@@ -105,6 +130,5 @@ void ofApp::obtenirFrameRate(){
     ofDrawBitmapString(msg, 10, 20);
     //ETAT VARIABLE EFFACER
     string msgETAT = "ETAT: " + ofToString(modeSuppr, 2);
-    ofDrawBitmapString(msgETAT, 10, 50);
-    /////////////////////
+    ofDrawBitmapString(msgETAT, 100, 50);
 }

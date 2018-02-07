@@ -33,6 +33,10 @@ public:
     Animation animation[5];
     ofShader enleverVert;
     
+    //--Copy Image Cam--//
+    ofFbo cameraDataFbo;
+    ofBufferObject cameraBuffer;
+    
     bool modeSuppr;
     bool vueCamera;
     bool sendData;

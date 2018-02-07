@@ -22,6 +22,11 @@ Télécharger le programme. Si cela ne fonctionne pas, il faudra compiler le pro
 
 - https://github.com/openFrameworks-arm/Resonate2013Workshop
 - https://forum.openframeworks.cc/t/shaders-examples-not-working-on-rpi-with-of-0-9-7/25896
+- https://projects.drogon.net/raspberry-pi/wiringpi/
+- http://codelab.fr/6814
+
+linux uvcdynctrl
+
 
 ### Windows (Explications temporaires).
 
