@@ -17,28 +17,7 @@ void Animation::setup(int largeur_, int hauteur_, char toucheDAction, int identi
 
 void Animation::update(int key, ofFbo capture){
     if(key == toucheMaj){
-        
-        //FBO POUR RECUPERER CAPTURE SCREEN (TEXTURE)
-        /*ofFbo tempfbo;
-        tempfbo.allocate(largeur, hauteur, GL_RGBA);
-        tempfbo.begin();
-        ofClear(0,0,0);
-        tempfbo.end();
-        
-        //CAPTURE ECRAN
-        ofTexture img;
-        img.allocate(largeur, hauteur, GL_RGB);
-        img.loadScreenData(0, 0, largeur, hauteur);
-        
-        //COPIE TEXTURE DANS LE FBO
-        tempfbo.begin();
-        img.draw(0, 0);
-        tempfbo.end();
-        
-        //ET NOUVEL OBJET
-        //images.push_back(tempfbo);*/
         images.push_back(capture);
-        
         seJoue = true;
     } else if (key == touche){
         seJoue =! seJoue;

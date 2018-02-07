@@ -28,14 +28,11 @@ public:
     int w;
     int h;
     int n = 5;
+    int curseur;
     
     ofVideoGrabber camera;
     Animation animation[5];
     ofShader enleverVert;
-    
-    //--Copy Image Cam--//
-    ofFbo cameraDataFbo;
-    ofBufferObject cameraBuffer;
     
     bool modeSuppr;
     bool vueCamera;

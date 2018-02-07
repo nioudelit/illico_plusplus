@@ -8,15 +8,6 @@ void ofApp::setup(){
     h = 300;
     camera.initGrabber(w, h);
     
-    //CAMERA DATA
-        //BUFFER
-    //cameraBuffer.allocate(w * h * 3, GL_STATIC_DRAW);
-        //FBO
-    cameraDataFbo.allocate(w, h, GL_RGB);
-    cameraDataFbo.begin();
-    ofClear(0);
-    cameraDataFbo.end();
-    
     //BOUCLES
     for(int i = 0; i < n; i++){
         animation[i].setup(w, h, raccourcis[i], i);
@@ -26,18 +17,12 @@ void ofApp::setup(){
     modeSuppr = false;
     vueCamera = false;
     sendData = false;
+    curseur = 0;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     camera.update();
-    //METTRE CONDITION ou APPELS FONCTIONS POUR ECONOMISER RASP
-    //if(camera.isFrameNew()){
-        //cameraDataFbo.begin();
-        //camera.draw(0, 0);
-        //cameraDataFbo.end();
-        //camera.getTexture().copyTo(cameraBuffer);
-    //}
 }
 
 //--------------------------------------------------------------
@@ -59,17 +44,19 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-    if(modeSuppr == false){
-        for(int i = 0; i < n; i++){
-            ofFbo injectionCamera;
-            injectionCamera.allocate(w, h);
-            injectionCamera.begin();
-            ofClear(0);
-            camera.draw(0, 0);
-            injectionCamera.end();
-            
-            animation[i].update(key, injectionCamera);
+    for(int i = 0; i < sizeof(raccourcis); i++){
+        if(key == raccourcis[i] || key == ofToChar(ofToUpper(ofToString(raccourcis[i])))){
+            curseur = i;
         }
+    }
+    if(modeSuppr == false){
+        ofFbo injectionCamera;
+        injectionCamera.allocate(w, h);
+        injectionCamera.begin();
+        ofClear(0);
+        camera.draw(0, 0);
+        injectionCamera.end();
+        animation[curseur].update(key, injectionCamera);
     } else {
         for(int i = 0; i < n; i++){
             animation[i].effacer(key);
