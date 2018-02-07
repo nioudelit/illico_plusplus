@@ -4,8 +4,8 @@
 void ofApp::setup(){
     
     //CAMERA
-    w = 400;
-    h = 300;
+    w = 800;
+    h = 600;
     camera.initGrabber(w, h);
     
     //BOUCLES
@@ -28,7 +28,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(0);
-    camera.draw(w, 0);
+    //camera.draw(w, 0);
     for(int i = 0; i < n; i++){
         animation[i].draw();
     }

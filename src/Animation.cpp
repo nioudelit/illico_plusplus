@@ -29,13 +29,18 @@ void Animation::update(int key, ofFbo capture){
 }
 
 void Animation::draw(){
-    if(seJoue && images.size() > 0){
+    //int ns = ofGetElapsedTimeMillis() / 10;
+    if(seJoue){
+        
+        //if(ns % 8 == 0){
         if(compteur < images.size()){
             compteur++;
         }
+        
         if(compteur == images.size()){
             compteur = 0;
         }
+        //}
 
         shader.begin();
         shader.setUniform1f("h", ofMap(ofGetMouseX(), 0, ofGetWindowWidth(), 0.0, 1.0));

@@ -29,7 +29,6 @@ public:
     int largeur;
     int hauteur;
     
-    
 };
 
 #endif

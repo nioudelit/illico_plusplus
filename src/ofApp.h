@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "Animation.h"
-#include "GuiApp.h"
 
 class ofApp : public ofBaseApp{
     
@@ -39,6 +38,5 @@ public:
     bool sendData;
     char raccourcis[5] = {'a', 'z', 'e', 'r', 't'};
     
-    shared_ptr<GuiApp> gui;
     
 };

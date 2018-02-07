@@ -69,7 +69,96 @@ Et remplacez par un numéro qui correspond à la webcam branchée (voir résulta
 
  [en rédaction].
  
- ## Algorithmes et GLSL
- 
- [en rédaction], vesion openGL
+## Algorithmes et GLSL
+
+Pour qu'illico fonctionne sur un Raspberry Pi, il faut faire quelques changements:
+
+Main.cpp (la version openGL est différente sur une raspberry):
+
+```
+#include "ofMain.h"
+#include "ofApp.h"
+#include "GuiApp.h"
+#include "ofAppGLFWWindow.h"
+
+//========================================================================
+int main( ){
+    
+    ofGLESWindowSettings settings;
+    
+    settings.glesVersion = 2;
+    settings.width = 800;
+    settings.height = 600;
+    settings.setPosition(ofVec2f(300,0));
+    ofCreateWindow(settings);
+
+    ofRunApp(new ofApp());
+
+}
+```
+Ce qui implique qu'il faudra aussi modifier les fichiers GLSL:
+
+test.vert:
+
+```
+uniform mat4 modelViewProjectionMatrix;
+
+attribute vec4 position;
+attribute vec2 texcoord;
+varying vec2 varyingtexcoord;
+
+void main()
+{
+    varyingtexcoord = vec2(texcoord.x, texcoord.y);
+    gl_Position = modelViewProjectionMatrix * position;
+}
+```
+test.frag:
+
+```
+precision highp float;
+
+// Recevoir Texture via OF
+uniform sampler2D tex0;
+uniform float h;
+uniform float s;
+uniform float b;
+
+//Position envoyees par le vertex shader
+varying vec2 varyingtexcoord;
+
+//Notre fragment haut en couleurs
+//out vec4 outputColor;
+
+vec3 rgb2hsv(vec3 c){
+    //https://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
+
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+void main(){
+
+	vec4 col = texture2D(tex0, varyingtexcoord);
+	vec3 vertReference = vec3(0.0, 1.0, 0.0);
+	vertReference = rgb2hsv(vertReference);
+
+	vec3 texColorHSB = rgb2hsv(col.xyz);
+	if(distance(texColorHSB.x, vertReference.x) <= h && 
+	   distance(texColorHSB.y, vertReference.y ) <= s &&
+	   distance(texColorHSB.z, vertReference.z) >= b)
+        	discard;
+	
+	gl_FragColor = vec4(col);
+
+	//float somme = col.r + col.g + col.b;
+	//float bright = somme * 0.33333;
+	//outputColor = vec4(vec3(bright), col.a);
+}
+```
 
