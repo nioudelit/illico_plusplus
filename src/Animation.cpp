@@ -19,8 +19,7 @@ void Animation::setup(int largeur_, int hauteur_, char toucheDAction, int identi
 }
 
 void Animation::update(int key, ofFbo capture){
-    if(key == toucheMaj){
-        //images.setDefaultTextureIndex(capture);
+    if(key == toucheMaj && images.size() < 20){
         images.push_back(capture);
         seJoue = true;
     } else if (key == touche){
