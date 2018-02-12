@@ -88,7 +88,7 @@ int main( ){
     
     settings.glesVersion = 2;
     settings.width = 800;
-    settings.height = 600;
+    settings.height = 480;
     settings.setPosition(ofVec2f(300,0));
     ofCreateWindow(settings);
 

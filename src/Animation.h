@@ -22,6 +22,7 @@ public:
     ofShader shader;
     
     int compteur;
+    int engrenage;
     int id_;
     char touche;
     char toucheMaj;

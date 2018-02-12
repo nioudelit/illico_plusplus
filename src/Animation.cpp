@@ -8,6 +8,7 @@ Animation::Animation(){
 void Animation::setup(int largeur_, int hauteur_, char toucheDAction, int identifiant){
     images.clear();
     compteur = 0;
+    engrenage = 0;
     
     largeur = largeur_;
     hauteur = hauteur_;
@@ -28,10 +29,8 @@ void Animation::update(int key, ofFbo capture){
 }
 
 void Animation::draw(){
-    //int ns = ofGetElapsedTimeMillis() / 10;
-    if(seJoue){
+    if(seJoue && images.size()>0){
         
-        //if(ns % 8 == 0){
         if(compteur < images.size()){
             compteur++;
         }
@@ -39,8 +38,7 @@ void Animation::draw(){
         if(compteur == images.size()){
             compteur = 0;
         }
-        //}
-
+        
         shader.begin();
         shader.setUniform1f("h", ofMap(ofGetMouseX(), 0, ofGetWindowWidth(), 0.0, 1.0));
         shader.setUniform1f("s", ofMap(ofGetMouseY(), 0, ofGetWindowHeight(), 0.0, 1.0));
@@ -48,10 +46,6 @@ void Animation::draw(){
         shader.setUniformTexture("tex0", images[compteur].getTexture(), id_);
         images[compteur].draw(0, 0);
         shader.end();
-        
-        //for(int i = 0; i < images.size(); i++){
-          //  images[i].draw(largeur, hauteur/2*i, largeur/2, hauteur/2);
-        //}
     }
     afficherCompteur();
 }
