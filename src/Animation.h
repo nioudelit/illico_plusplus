@@ -14,6 +14,7 @@ public:
     void draw();
     void capturer();
     void jouer();
+    void vignettes();
     void cacher();
     void effacer(int key);
     void afficherCompteur();

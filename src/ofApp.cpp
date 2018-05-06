@@ -4,8 +4,9 @@
 void ofApp::setup(){
     
     //CAMERA
-    w = 800;
-    h = 600;
+    w = 640;
+    h = 480;
+    
     camera.initGrabber(w, h);
     
     //BOUCLES
@@ -18,6 +19,8 @@ void ofApp::setup(){
     vueCamera = false;
     sendData = false;
     curseur = 0;
+    
+    ofSetFrameRate(24);
 }
 
 //--------------------------------------------------------------
@@ -39,6 +42,12 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
     if(key == 'x'){
         modeSuppr = true;
+    }
+    if(key == 'c'){
+        ofSetFrameRate(12);
+    }
+    if(key == 'v'){
+        ofSetFrameRate(24);
     }
 }
 

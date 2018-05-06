@@ -59,6 +59,10 @@ void Animation::effacer(int key){
     }
 }
 
+void Animation::vignettes(){
+    
+}
+
 
 void Animation::capturer(){
     
