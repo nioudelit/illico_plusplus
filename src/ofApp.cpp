@@ -14,6 +14,9 @@ void ofApp::setup(){
         animation[i].setup(w, h, raccourcis[i], i);
     }
     
+    //VIGNETTE
+    vignette.setup();
+    
     //INIT COMMANDES
     modeSuppr = false;
     vueCamera = false;
@@ -21,12 +24,20 @@ void ofApp::setup(){
     curseur = 0;
     
     //GUYGUY
+    //ofColor rouge(140, 10, 20);
     gui.setup();
-    gui.add(deplacer.setup("deplacer", 0, -600, 0));
-    gui.add(opaciteCam.setup("opaciteCam", 0, 0, 255));
+    gui.add(deplacer.setup("deplacer timeline", 0, -w, 0));
     gui.add(hueV.setup("hueV", 0, 0., 1.));
     gui.add(saturationV.setup("saturationV", 0.9, 0., 1.));
-    gui.setPosition(640, 5);
+    gui.setPosition(w + w/4, 0);
+    
+    guigui.setup();
+    guigui.add(opaciteCam.setup("calque alpha du flux", 124, 0, 255));
+    guigui.add(tagueule.setup("boucler", true));
+    guigui.add(playStop.setup("play n stop", false));
+    guigui.setPosition(10, h);
+    //guigui.setBackgroundColor(rouge);
+    
     
     ofSetFrameRate(12);
 }
@@ -37,7 +48,6 @@ void ofApp::update(){
     for(int i = 0; i < n ; i++){
         animation[i].variables(deplacer, hueV, saturationV);
     }
-   
 }
 
 //--------------------------------------------------------------
@@ -46,25 +56,47 @@ void ofApp::draw(){
     ofBackground(0);
     
     ofFill(); ofSetColor(110, 110, 110);
-    ofDrawRectangle(640, 0, ofGetWindowWidth() - 640, ofGetWindowHeight());
+    ofDrawRectangle(w, 0, ofGetWindowWidth() - w, ofGetWindowHeight());
     
-    ofSetColor(255);
+    ofSetColor(0, 140, 30);
     for(int i = n-1; i >= 0; i--){
         animation[i].vignettes(i);
     }
     
     //camera.draw(w, 0);
     ofFill(); ofSetColor(0);
-    ofDrawRectangle(0, 0, 640, 480);
+    ofDrawRectangle(0, 0, w, ofGetWindowHeight());
     
     for(int i = 0; i < n; i++){
-        animation[i].draw();
+        animation[i].draw(tagueule);
+        animation[i].indiceVignette();
     }
+    
     ofSetColor(255, opaciteCam);
     camera.draw(0, 0);
+    ofSetColor(255);
+    camera.draw(w, 0, w/4, h/4);
     
+    
+    //GUI DEBORD
     obtenirFrameRate();
     gui.draw();
+    guigui.draw();
+    
+    
+    
+    //TEST VIGNETTE//
+    //ofDrawEllipse(numeroVignettePointee(ofGetMouseX()), w/4, 50, 50);
+    //ofSetColor(255, 120);
+    //ofDrawRectangle(0, numeroVignettePointee(ofGetMouseY()) * h/4, ofGetWindowWidth(), h/4);
+    
+    //ofSetColor(255, 0, 10);
+    //string msg = "pos V" + ofToString(numeroVignettePointee(ofGetMouseY()), 2);
+    //ofDrawBitmapString(msg, 100, 200);
+    if(animation[0].cardinal()>0){
+        //vignette.selectionnerImg(animation[0].imageVignette(numeroVignettePointee(ofGetMouseX)));
+        //vignette.selectionnerImg(animation[0].imageVignette(numeroVignettePointee(640)));
+    }
 }
 
 //--------------------------------------------------------------
@@ -78,6 +110,13 @@ void ofApp::keyPressed(int key){
     if(key == 'v'){
         ofSetFrameRate(24);
     }
+    /*
+    if(key == ' '){
+        for(int i = 0; i < n; i++){
+            animation[i].draw();
+        }
+    }
+     */
 }
 
 //--------------------------------------------------------------
@@ -110,7 +149,7 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    
+    cout << "test   " << x << " , " << y << endl;
 }
 
 //--------------------------------------------------------------
@@ -171,6 +210,11 @@ void ofApp::plusGrandCardinal(){
         }
     }
     
-    deplacer.setMin(temp * 160 * (-1) +  200);
+    deplacer.setMin(temp * w/4 * (-1) + w/4);
     
+}
+
+int ofApp::numeroVignettePointee(int x_){
+    int numero = int(x_) % (h/4);
+    return numero;
 }

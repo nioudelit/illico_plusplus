@@ -38,17 +38,25 @@ void Animation::variables(float deplacer_, float hue_, float saturation_){
     saturation = saturation_;
 }
 
-void Animation::draw(){
+void Animation::draw(bool jouer){
     
     if(seJoue && images.size()>0){
         
         if(compteur < images.size()){
-            compteur++;
+            if(jouer){
+                compteur++;
+            }
         }
         
         if(compteur == images.size()){
             compteur = 0;
         }
+        
+        images[compteur].begin();
+        ofFill();
+        ofSetColor(15, 200, 15);
+        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 20);
+        images[compteur].end();
         
         shader.begin();
         //shader.setUniform1f("h", ofMap(0, 0, ofGetWindowWidth(), 0.0, 1.0));
@@ -59,6 +67,7 @@ void Animation::draw(){
         shader.setUniformTexture("tex0", images[compteur].getTexture(), id_);
         images[compteur].draw(0, 0);
         shader.end();
+        
     }
     afficherCompteur();
     //gui.draw();
@@ -76,14 +85,50 @@ void Animation::effacer(int key){
 void Animation::vignettes(int i_){
     ofPushMatrix();
     ofTranslate(deplacer, 0);
+    ofSetColor(255);
         for(int i = 0; i < images.size(); i++){
-            images[i].draw(640 + i * 160, (5 - i_)* 120, 160, 120);
+            images[i].draw(largeur + i * largeur/4, (5 - i_)* hauteur/4, largeur/4, hauteur/4);
         }
+    if(images.size() > 0){
+        ofSetColor(255, 0, 0);
+        ofDrawLine(largeur + compteur * largeur/4 + 50, (5 - i_) * hauteur/4,
+               largeur + compteur * largeur/4 + 50, (5 - i_) * hauteur/4 + hauteur/4);
+    }
+    
+    ofSetColor(255);
+    string msg = "position relative souris: " + ofToString(ofGetMouseX() + deplacer * (-1), 2);
     ofPopMatrix();
+    
+    ofDrawBitmapString(msg, 640, 480);
+}
+
+int Animation::indiceVignette(){
+    int cervo = (ofGetMouseX() - largeur + deplacer * (-1));
+    cervo = cervo / 160;
+    
+    ofSetColor(240, 0, 20);
+    string msg = "position relative souris: " + ofToString(cervo, 2);
+    ofDrawBitmapString(msg, 640, 400);
+    
+    ofNoFill();
+    ofSetColor(255, 255, 0);
+    ofDrawRectangle(cervo * largeur/4  + largeur + deplacer, ofGetWindowHeight() - hauteur/4, 160, 120);
+    
+    cout << "Salut " << cervo << endl;
+    return 0;
 }
 
 int Animation::cardinal(){
     return images.size();
+}
+
+int Animation::numeroVignettePointee(int x_){
+    int numero = x_ % (160+640);
+    return x_;
+}
+
+ofFbo Animation::imageVignette(int n_){
+    return images[n_];
 }
 
 
