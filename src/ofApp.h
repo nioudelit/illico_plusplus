@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 #include "Animation.h"
 
 class ofApp : public ofBaseApp{
@@ -23,6 +24,7 @@ public:
     void gotMessage(ofMessage msg);
     
     void obtenirFrameRate();
+    void plusGrandCardinal();
     
     int w;
     int h;
@@ -33,10 +35,37 @@ public:
     Animation animation[5];
     ofShader enleverVert;
     
+    ofxFloatSlider deplacer;
+    ofxFloatSlider opaciteCam;
+    ofxFloatSlider hueV;
+    ofxFloatSlider saturationV;
+    ofxPanel gui;
+    
+    
+    
     bool modeSuppr;
     bool vueCamera;
     bool sendData;
     char raccourcis[5] = {'a', 'z', 'e', 'r', 't'};
+    
+    
+    /*
+     
+    - Correction image par image avec brush vert
+    - Dessiner sur calque (paint)
+    - Choisir fond sortie: soit vert soit noir.
+    - Ajuster couleur d'une ligne animation
+    - Stoper boucle (play/stop)
+    - Avancer/reculer image/par image >>
+    - Exporter sortie en suite images
+    - Spécifier quels calques peuvent être «fondverisés»
+    - Remettre à zéro compteur
+    - Jouer sans boucler.
+    - Pouvoir choisir une image disD
+     
+     
+    */
+
     
     
 };
