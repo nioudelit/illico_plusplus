@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/Animation.cpp"
-            timestampString = "547413925.574337"
+            timestampString = "547467452.743155"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "Animation::vignettes(int i_)"
             landmarkType = "5">
          </BreakpointContent>

@@ -27,11 +27,15 @@ public:
     void obtenirFrameRate();
     void plusGrandCardinal();
     int numeroVignettePointee(int x_);
+    int * indiceVignette();
+    
     
     int w;
     int h;
     int n = 5;
     int curseur;
+    int calqueSup = 0;
+    int calqueSupTemp = 0;
     
     ofVideoGrabber camera;
     Animation animation[5];
@@ -42,12 +46,14 @@ public:
     ofxFloatSlider deplacer;
     ofxFloatSlider hueV;
     ofxFloatSlider saturationV;
+    ofxFloatSlider brightnessV;
     ofxPanel gui;
     
     /////
     ofxToggle tagueule;
     ofxFloatSlider opaciteCam;
     ofxToggle playStop;
+    ofxToggle vertOuNoir;
     ofxPanel guigui;
     
     
@@ -61,18 +67,22 @@ public:
      
      CLASSE VIGNETTE?
      
-    - Correction image par image avec brush vert
-    - Dessiner sur calque (paint)
+    - Menu (paint)
+        - formes (étoiles, rond, carré)
     - Ajuster couleur d'une ligne animation
-    - Pouvoir supprimer une image spécifique de la liste
-     - selecteur images
+    - erosion
+    
+    $ selecteur images
      - afficher image sélectionner aperçu
+     - Pouvoir supprimer une image spécifique de la liste
 
 
      
     FLUX ——— à voir.
     
+     CHANGER ORDRE DES CALQUES
     - Retourner camera ?
+    - parametrer camera
     - VOir quel calcque est caché ou non
     - remettre toutes les barres compteurs a 
      - Spécifier quels calques peuvent être «fondverisés»
@@ -82,18 +92,23 @@ public:
      - Jouer sans boucler.
      - Pouvoir choisir une image disD
      - dragged pour parcourir listes img.
+     - TISSAGE LISTE ANIM VERS PATTERN MOUVEMENT DESSINABLE
+     - Calque de calque (pgraphics dans pgraphics).
+     - Un menu
+     - Dupliquer images
      
     CLASSE SORTIE
      
      - Choisir fond sortie: soit vert soit noir.
      - Exporter sortie en suite images
      - exporter séquence
+     - sauvegarder (banderoles?) --> importer exporter suite images
 
      
-     Nouvelle version de l'illico-cinoche (Programme fait initialement pour l'impro visuelle en direct). Cette version, moins axée «live», permet de créer rapido des petites animations/boucles avec flux webcam, calques et fond vert. #lowFi #cadavreExquisAnimé
-     — http://completement.pt/dqsdqsdsd —
+     Niou version de l'illico-cinoche (soft fait initialement pour l'impro visuelle en direct). Ce prototype, moins axé «live», permet de créer rapido des ptites séquences animées via flux webcam, calques et fond vert. #lowFi #cadavreExquisAnimé #openframeworks
+     http://completement.pt/dqsdqsdsd
      
-     C'est encore en chantier et tout, y'a encore plein de bugs et cie, pas très ergonomique et tout mais bon ça marche un peu. C'est vraiment un programme de la râcle.
+     C'est encore en chantier et tout, y'a encore plein de bugs et cie, pas ergonomique, des choses abscentes etc. mais bon ça marche (un peu). C'est vraiment un programme de la râcle, codé sans trop savoir où j'allais… donc bon.
      
     */
 

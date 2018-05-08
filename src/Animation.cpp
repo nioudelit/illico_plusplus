@@ -32,13 +32,14 @@ void Animation::update(int key, ofFbo capture){
     }
 }
 
-void Animation::variables(float deplacer_, float hue_, float saturation_){
+void Animation::variables(float deplacer_, float hue_, float saturation_, float brightness_){
     deplacer = deplacer_;
     hue = hue_;
     saturation = saturation_;
+    brightness = brightness_;
 }
 
-void Animation::draw(bool jouer){
+void Animation::draw(bool jouer, int calque_){
     
     if(seJoue && images.size()>0){
         
@@ -52,18 +53,20 @@ void Animation::draw(bool jouer){
             compteur = 0;
         }
         
-        images[compteur].begin();
-        ofFill();
-        ofSetColor(15, 200, 15);
-        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 20);
-        images[compteur].end();
+        if(ofGetMousePressed() && calque_ == id_){
+            images[compteur].begin();
+            ofFill();
+            ofSetColor(15, 200, 15);
+            ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 80);
+            images[compteur].end();
+        }
         
         shader.begin();
         //shader.setUniform1f("h", ofMap(0, 0, ofGetWindowWidth(), 0.0, 1.0));
         //shader.setUniform1f("s", ofMap(0, 0, ofGetWindowHeight(), 0.0, 1.0));
         shader.setUniform1f("h", hue);
         shader.setUniform1f("s", saturation);
-        shader.setUniform1f("b", 0.14);
+        shader.setUniform1f("b", brightness);
         shader.setUniformTexture("tex0", images[compteur].getTexture(), id_);
         images[compteur].draw(0, 0);
         shader.end();
@@ -116,6 +119,10 @@ int Animation::indiceVignette(){
     
     cout << "Salut " << cervo << endl;
     return 0;
+}
+
+bool Animation::estJoue(){
+    return seJoue;
 }
 
 int Animation::cardinal(){

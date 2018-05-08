@@ -5,8 +5,10 @@ void ofApp::setup(){
     
     //CAMERA
     w = 640;
-    h = 480;
+    h = 420;
     
+    //camera.listDevices();
+    camera.setDeviceID(0); // ou 2 pour firewire
     camera.initGrabber(w, h);
     
     //BOUCLES
@@ -27,14 +29,16 @@ void ofApp::setup(){
     //ofColor rouge(140, 10, 20);
     gui.setup();
     gui.add(deplacer.setup("deplacer timeline", 0, -w, 0));
-    gui.add(hueV.setup("hueV", 0, 0., 1.));
-    gui.add(saturationV.setup("saturationV", 0.9, 0., 1.));
+    gui.add(hueV.setup("hueV", 0.1, 0., 1.));
+    gui.add(saturationV.setup("saturationV", 0.95, 0., 1.));
+    gui.add(brightnessV.setup("brightness", 0.01, 0., 1.));
     gui.setPosition(w + w/4, 0);
     
     guigui.setup();
-    guigui.add(opaciteCam.setup("calque alpha du flux", 124, 0, 255));
+    guigui.add(opaciteCam.setup("calque alpha du flux", 0, 0, 255));
     guigui.add(tagueule.setup("boucler", true));
     guigui.add(playStop.setup("play n stop", false));
+    guigui.add(vertOuNoir.setup("fond noir ou vert", false));
     guigui.setPosition(10, h);
     //guigui.setBackgroundColor(rouge);
     
@@ -46,8 +50,18 @@ void ofApp::setup(){
 void ofApp::update(){
     camera.update();
     for(int i = 0; i < n ; i++){
-        animation[i].variables(deplacer, hueV, saturationV);
+        animation[i].variables(deplacer, hueV, saturationV, brightnessV);
     }
+    
+    for(int i = 0; i < n; i++){
+        if(animation[i].cardinal() > 0){
+            if(animation[i].estJoue() && calqueSup >= calqueSupTemp){
+                calqueSup = i;
+                calqueSupTemp = calqueSup;
+            }
+        }
+    }
+    //cout << "plus haut calque visible" << calqueSup << endl;
 }
 
 //--------------------------------------------------------------
@@ -64,12 +78,17 @@ void ofApp::draw(){
     }
     
     //camera.draw(w, 0);
-    ofFill(); ofSetColor(0);
+    ofFill();
+    if(vertOuNoir){
+        ofSetColor(15, 200, 15);
+    }else{
+       ofSetColor(0); 
+    }
     ofDrawRectangle(0, 0, w, ofGetWindowHeight());
     
     for(int i = 0; i < n; i++){
-        animation[i].draw(tagueule);
-        animation[i].indiceVignette();
+        animation[i].draw(tagueule, calqueSup);
+        //animation[i].indiceVignette();
     }
     
     ofSetColor(255, opaciteCam);
@@ -84,19 +103,9 @@ void ofApp::draw(){
     guigui.draw();
     
     
-    
     //TEST VIGNETTE//
-    //ofDrawEllipse(numeroVignettePointee(ofGetMouseX()), w/4, 50, 50);
-    //ofSetColor(255, 120);
-    //ofDrawRectangle(0, numeroVignettePointee(ofGetMouseY()) * h/4, ofGetWindowWidth(), h/4);
-    
-    //ofSetColor(255, 0, 10);
-    //string msg = "pos V" + ofToString(numeroVignettePointee(ofGetMouseY()), 2);
-    //ofDrawBitmapString(msg, 100, 200);
-    if(animation[0].cardinal()>0){
-        //vignette.selectionnerImg(animation[0].imageVignette(numeroVignettePointee(ofGetMouseX)));
-        //vignette.selectionnerImg(animation[0].imageVignette(numeroVignettePointee(640)));
-    }
+    indiceVignette();
+
 }
 
 //--------------------------------------------------------------
@@ -149,7 +158,7 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    cout << "test   " << x << " , " << y << endl;
+    //cout << "test   " << x << " , " << y << endl;
 }
 
 //--------------------------------------------------------------
@@ -217,4 +226,34 @@ void ofApp::plusGrandCardinal(){
 int ofApp::numeroVignettePointee(int x_){
     int numero = int(x_) % (h/4);
     return numero;
+}
+
+int * ofApp::indiceVignette(){
+    static int posVignette[2];
+    
+    unsigned int X = (ofGetMouseX() - w + deplacer * (-1));
+    X = X / (w/4);
+    
+    unsigned int Y = ofGetMouseY();
+    Y = Y / (h/4);
+    
+    //DESSINER CASE SELECTIONNEE
+    ofSetColor(250, 230, 0, 120);
+    ofDrawRectangle(X * w/4  + w + deplacer, Y * (h/4),
+                    w/4, h/4);
+    
+    ofSetColor(240, 0, 20);
+    
+    //ECRIRE VALEURS (+ permutation idcalque)
+    Y = n - Y;
+    if(Y >= 5){
+        Y = n-1;
+    }
+    
+    string msg = "indice vignett: " + ofToString(X, 2) + "\n calque num: " + ofToString(Y, 2);
+    ofDrawBitmapString(msg, 1050, 20);
+    
+    
+    ofSetColor(255);
+    return posVignette;
 }
