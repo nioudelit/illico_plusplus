@@ -62,6 +62,9 @@ public:
     bool sendData;
     char raccourcis[5] = {'a', 'z', 'e', 'r', 't'};
     
+    bool modeSelect = false;
+    int caseId[2] = {0, 0};
+    
     
     /*
      
@@ -103,12 +106,16 @@ public:
      - Exporter sortie en suite images
      - exporter séquence
      - sauvegarder (banderoles?) --> importer exporter suite images
+     - gif ffmpeg
 
      
      Niou version de l'illico-cinoche (soft fait initialement pour l'impro visuelle en direct). Ce prototype, moins axé «live», permet de créer rapido des ptites séquences animées via flux webcam, calques et fond vert. #lowFi #cadavreExquisAnimé #openframeworks
      http://completement.pt/dqsdqsdsd
      
-     C'est encore en chantier et tout, y'a encore plein de bugs et cie, pas ergonomique, des choses abscentes etc. mais bon ça marche (un peu). C'est vraiment un programme de la râcle, codé sans trop savoir où j'allais… donc bon.
+     C'est encore en chantier et tout, y'a encore plein de bugs et cie, moche et pas ergonomique, des choses abscentes etc. mais bon ça marche (un peu). C'est vraiment un programme de la râcle, codé sans trop savoir où j'allais… donc bon.
+     
+     Pour l'instant c'eest compilé sur mac, mais je ferais un ptit export pour linuss. La version linux aura une fonction en plus assez pratique: gestion de la webcam (uvc).
+     
      
     */
 

@@ -30,6 +30,8 @@ void Animation::update(int key, ofFbo capture){
     } else if (key == touche){
         seJoue =! seJoue;
     }
+    
+    
 }
 
 void Animation::variables(float deplacer_, float hue_, float saturation_, float brightness_){
@@ -40,8 +42,8 @@ void Animation::variables(float deplacer_, float hue_, float saturation_, float 
 }
 
 void Animation::draw(bool jouer, int calque_){
-    
-    if(seJoue && images.size()>0){
+
+    if(seJoue && images.size() > 0){
         
         if(compteur < images.size()){
             if(jouer){
@@ -105,19 +107,35 @@ void Animation::vignettes(int i_){
     ofDrawBitmapString(msg, 640, 480);
 }
 
+void Animation::reculer(){
+    if(compteur > 0 && images.size() > 0){
+        compteur--;
+    } else {
+        compteur = images.size() - 1;
+    }
+}
+
+void Animation::avancer(){
+    if(compteur < images.size() - 1 && images.size() > 0){
+        compteur++;
+    } else {
+        compteur = 0;
+    }
+}
+
 int Animation::indiceVignette(){
     int cervo = (ofGetMouseX() - largeur + deplacer * (-1));
     cervo = cervo / 160;
     
-    ofSetColor(240, 0, 20);
-    string msg = "position relative souris: " + ofToString(cervo, 2);
-    ofDrawBitmapString(msg, 640, 400);
+    //ofSetColor(240, 0, 20);
+    //string msg = "position relative souris: " + ofToString(cervo, 2);
+    //ofDrawBitmapString(msg, 640, 400);
     
-    ofNoFill();
-    ofSetColor(255, 255, 0);
-    ofDrawRectangle(cervo * largeur/4  + largeur + deplacer, ofGetWindowHeight() - hauteur/4, 160, 120);
+    //ofNoFill();
+    //ofSetColor(255, 255, 0);
+    //ofDrawRectangle(cervo * largeur/4  + largeur + deplacer, ofGetWindowHeight() - hauteur/4, 160, 120);
     
-    cout << "Salut " << cervo << endl;
+    //cout << "Salut " << cervo << endl;
     return 0;
 }
 

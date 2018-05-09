@@ -29,9 +29,9 @@ void ofApp::setup(){
     //ofColor rouge(140, 10, 20);
     gui.setup();
     gui.add(deplacer.setup("deplacer timeline", 0, -w, 0));
-    gui.add(hueV.setup("hueV", 0.1, 0., 1.));
-    gui.add(saturationV.setup("saturationV", 0.95, 0., 1.));
-    gui.add(brightnessV.setup("brightness", 0.01, 0., 1.));
+    gui.add(hueV.setup("etendue vert", 0.1, 0., 1.));
+    gui.add(saturationV.setup("intensite vert", 0.95, 0., 1.));
+    gui.add(brightnessV.setup("lumino vert", 0.01, 0., 1.));
     gui.setPosition(w + w/4, 0);
     
     guigui.setup();
@@ -119,6 +119,10 @@ void ofApp::keyPressed(int key){
     if(key == 'v'){
         ofSetFrameRate(24);
     }
+    if(key == OF_KEY_LEFT){
+        //cout << "appuyeee" << endl;
+        //ofDrawEllipse(700, 600, 100, 100);
+    }
     /*
     if(key == ' '){
         for(int i = 0; i < n; i++){
@@ -149,6 +153,16 @@ void ofApp::keyReleased(int key){
         }
     }
     modeSuppr = false;
+    
+    if(key == OF_KEY_LEFT){
+        animation[indiceVignette()[1]].reculer();
+    }
+    if(key == OF_KEY_RIGHT){
+        animation[indiceVignette()[1]].avancer();
+    }
+    if(key == ' '){
+        tagueule =! tagueule;
+    }
 }
 
 //--------------------------------------------------------------
@@ -168,6 +182,8 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
+    modeSelect =! modeSelect;
+    cout << modeSelect << endl;
     
 }
 
@@ -231,14 +247,35 @@ int ofApp::numeroVignettePointee(int x_){
 int * ofApp::indiceVignette(){
     static int posVignette[2];
     
-    unsigned int X = (ofGetMouseX() - w + deplacer * (-1));
-    X = X / (w/4);
     
-    unsigned int Y = ofGetMouseY();
-    Y = Y / (h/4);
+    unsigned int X = 0;
+    
+    if(modeSelect == false){
+        X = (ofGetMouseX() - w + deplacer * (-1));
+        X = X / (w/4);
+        caseId[0] = X;
+    } else {
+        X = caseId[0];
+    }
+    
+    
+    unsigned int Y = 0;
+    if (modeSelect == false) {
+        ofSetColor(250, 230, 0, 120);
+        Y = ofGetMouseY();
+        Y = Y / (h/4);
+        caseId[1] = Y;
+    } else {
+        ofSetColor(255, 56);
+        Y = caseId[1];
+        ofDrawRectangle(640, Y * (h/4),
+                        w, h/4);
+    }
+    
     
     //DESSINER CASE SELECTIONNEE
-    ofSetColor(250, 230, 0, 120);
+    
+    
     ofDrawRectangle(X * w/4  + w + deplacer, Y * (h/4),
                     w/4, h/4);
     
@@ -250,10 +287,13 @@ int * ofApp::indiceVignette(){
         Y = n-1;
     }
     
-    string msg = "indice vignett: " + ofToString(X, 2) + "\n calque num: " + ofToString(Y, 2);
+    posVignette[0] = X;
+    posVignette[1] = Y;
+    
+    string msg = "indice vignett: " + ofToString(posVignette[0], 2) + "\n calque num: " + ofToString(posVignette[1], 2);
     ofDrawBitmapString(msg, 1050, 20);
-    
-    
     ofSetColor(255);
+    
+    
     return posVignette;
 }

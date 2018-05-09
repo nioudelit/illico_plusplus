@@ -29,6 +29,9 @@ public:
     void effacer(int key);
     void afficherCompteur();
     
+    void avancer();
+    void reculer();
+    
     vector <ofFbo> images;
     ofShader shader;
     
