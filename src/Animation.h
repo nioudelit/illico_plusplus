@@ -34,6 +34,9 @@ public:
     void cacher();
     void montrer();
     
+    void onGifSaved(string & fileName);
+    void exit();
+    
     vector <ofFbo> images;
     ofShader shader;
     

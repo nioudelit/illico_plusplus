@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxGifEncoder.h"
 #include "Animation.h"
 #include "Vignette.h"
 
@@ -30,6 +31,9 @@ public:
     int * indiceVignette();
     void selecteur();
     
+    void onGifSaved(string & fileName);
+    void exit();
+    
     
     int w;
     int h;
@@ -57,6 +61,10 @@ public:
     ofxToggle playStop;
     ofxToggle vertOuNoir;
     ofxPanel guigui;
+    
+    //////GIF EXPORT
+    ofxGifEncoder gifEncoder;
+    ofImage imgSauvegarde;
     
     
     bool modeSuppr;

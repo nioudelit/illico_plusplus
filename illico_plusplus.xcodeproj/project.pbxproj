@@ -13,6 +13,7 @@
 		837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15F2C6477A769C03A56D1401 /* ofxSlider.cpp */; };
 		856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9604B925D32EE39065747725 /* ofxBaseGui.cpp */; };
 		9795CDC720A0718400A95133 /* Vignette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9795CDC520A0718400A95133 /* Vignette.cpp */; };
+		97996E5C20A352AA00F08AA8 /* ofxGifEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97996E5520A352AA00F08AA8 /* ofxGifEncoder.cpp */; };
 		97E2711C2025E52300D2DD69 /* Animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E2711A2025E52300D2DD69 /* Animation.cpp */; };
 		B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */; };
 		B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */; };
@@ -67,6 +68,9 @@
 		9788BBD82027273A000E1169 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		9795CDC520A0718400A95133 /* Vignette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vignette.cpp; sourceTree = "<group>"; };
 		9795CDC620A0718400A95133 /* Vignette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vignette.h; sourceTree = "<group>"; };
+		97996E5420A352AA00F08AA8 /* ofxGifDitherTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGifDitherTypes.h; sourceTree = "<group>"; };
+		97996E5520A352AA00F08AA8 /* ofxGifEncoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGifEncoder.cpp; sourceTree = "<group>"; };
+		97996E5620A352AA00F08AA8 /* ofxGifEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGifEncoder.h; sourceTree = "<group>"; };
 		97E2711A2025E52300D2DD69 /* Animation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Animation.cpp; sourceTree = "<group>"; };
 		97E2711B2025E52300D2DD69 /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
 		B87C60311EC1FE841C1ECD89 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = ../../../addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
@@ -111,6 +115,24 @@
 			name = local_addons;
 			sourceTree = "<group>";
 		};
+		97996E3C20A352AA00F08AA8 /* ofxGifEncoder */ = {
+			isa = PBXGroup;
+			children = (
+				97996E5320A352AA00F08AA8 /* src */,
+			);
+			path = ofxGifEncoder;
+			sourceTree = "<group>";
+		};
+		97996E5320A352AA00F08AA8 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				97996E5420A352AA00F08AA8 /* ofxGifDitherTypes.h */,
+				97996E5520A352AA00F08AA8 /* ofxGifEncoder.cpp */,
+				97996E5620A352AA00F08AA8 /* ofxGifEncoder.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		A763ED608B35AE3310251DEE /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +160,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				97996E3C20A352AA00F08AA8 /* ofxGifEncoder */,
 				480A780D8D0308AE4A368801 /* ofxGui */,
 			);
 			name = addons;
@@ -278,6 +301,7 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
+				97996E5C20A352AA00F08AA8 /* ofxGifEncoder.cpp in Sources */,
 				9795CDC720A0718400A95133 /* Vignette.cpp in Sources */,
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
 				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,

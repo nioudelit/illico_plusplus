@@ -43,8 +43,12 @@ void ofApp::setup(){
     guigui.setPosition(10, h);
     //guigui.setBackgroundColor(rouge);
     
+    ///GIF
+    gifEncoder.setup(w, h, 0.25f, 16);
+    ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &ofApp::onGifSaved);
     
     //ofSetFrameRate(12);
+    cout << float(0.1f) << endl;
 }
 
 //--------------------------------------------------------------
@@ -145,6 +149,11 @@ void ofApp::keyPressed(int key){
         }
     }
      */
+    if(key == 'w'){
+        //animation[0].effacerVignette(0);
+        imgSauvegarde.grabScreen(0, 0, w, h);
+        gifEncoder.addFrame(imgSauvegarde, 0.1f);
+    }
 }
 
 //--------------------------------------------------------------
@@ -188,7 +197,14 @@ void ofApp::keyReleased(int key){
         tagueule =! tagueule;
     }
     if(key == 'w'){
-        animation[0].effacerVignette(0);
+        //animation[0].effacerVignette(0);
+        //ofImage imgSauvegarde;
+        //imgSauvegarde.grabScreen(0, 0, w, h);
+        //gifEncoder.addFrame(imgSauvegarde, 100);
+    }
+    if(key == 'l'){
+        gifEncoder.save("couilllle.gif");
+        //gifEncoder.exit();
     }
 }
 
@@ -356,4 +372,15 @@ void ofApp::selecteur(){
     
     /*ofDrawRectangle(w, Y_ * (h/4),
                     w, h/4);*/
+}
+
+
+///////GIF//////////
+
+void ofApp::onGifSaved(string &fileName) {
+    cout << "gif saved as " << fileName << endl;
+}
+
+void ofApp::exit() {
+    gifEncoder.exit();
 }
