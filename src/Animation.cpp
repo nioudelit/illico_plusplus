@@ -34,15 +34,16 @@ void Animation::update(int key, ofFbo capture){
     
 }
 
-void Animation::variables(float deplacer_, float hue_, float saturation_, float brightness_){
+void Animation::variables(float deplacer_, float hue_, float saturation_, float brightness_, float tailleSouris_){
     deplacer = deplacer_;
     hue = hue_;
     saturation = saturation_;
     brightness = brightness_;
+    tailleSouris = tailleSouris_;
 }
 
 void Animation::draw(bool jouer, int calque_){
-
+    //compteur = compteur_;
     if(seJoue && images.size() > 0){
         
         if(compteur < images.size()){
@@ -59,7 +60,7 @@ void Animation::draw(bool jouer, int calque_){
             images[compteur].begin();
             ofFill();
             ofSetColor(15, 200, 15);
-            ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 80);
+            ofDrawCircle(ofGetMouseX(), ofGetMouseY(), tailleSouris);
             images[compteur].end();
         }
         
@@ -75,7 +76,6 @@ void Animation::draw(bool jouer, int calque_){
         
     }
     afficherCompteur();
-    //gui.draw();
 }
 
 
@@ -87,24 +87,35 @@ void Animation::effacer(int key){
     }
 }
 
+void Animation::effacerVignette(int indice_){
+    images[compteur].clear();
+}
+
 void Animation::vignettes(int i_){
     ofPushMatrix();
     ofTranslate(deplacer, 0);
-    ofSetColor(255);
-        for(int i = 0; i < images.size(); i++){
-            images[i].draw(largeur + i * largeur/4, (5 - i_)* hauteur/4, largeur/4, hauteur/4);
-        }
+    
+    if(seJoue){
+        ofSetColor(255);
+    } else {
+        ofSetColor(255, 20);
+    }
+    
+    for(int i = 0; i < images.size(); i++){
+        images[i].draw(largeur + i * largeur/4, (5 - i_)* hauteur/4, largeur/4, hauteur/4);
+    }
     if(images.size() > 0){
         ofSetColor(255, 0, 0);
         ofDrawLine(largeur + compteur * largeur/4 + 50, (5 - i_) * hauteur/4,
                largeur + compteur * largeur/4 + 50, (5 - i_) * hauteur/4 + hauteur/4);
     }
     
+    
     ofSetColor(255);
-    string msg = "position relative souris: " + ofToString(ofGetMouseX() + deplacer * (-1), 2);
+    //string msg = "position relative souris: " + ofToString(ofGetMouseX() + deplacer * (-1), 2);
     ofPopMatrix();
     
-    ofDrawBitmapString(msg, 640, 480);
+    //ofDrawBitmapString(msg, 640, 480);
 }
 
 void Animation::reculer(){
@@ -121,6 +132,10 @@ void Animation::avancer(){
     } else {
         compteur = 0;
     }
+}
+
+void Animation::choisir(int x_){
+    compteur = x_;
 }
 
 int Animation::indiceVignette(){
@@ -143,6 +158,14 @@ bool Animation::estJoue(){
     return seJoue;
 }
 
+void Animation::cacher(){
+    seJoue = false;
+}
+
+void Animation::montrer(){
+    seJoue = true;
+}
+
 int Animation::cardinal(){
     return images.size();
 }
@@ -156,19 +179,6 @@ ofFbo Animation::imageVignette(int n_){
     return images[n_];
 }
 
-
-void Animation::capturer(){
-    
-}
-
-void Animation::jouer(){
-    
-}
-
-
-void Animation::cacher(){
-    
-}
 
 void Animation::afficherCompteur(){
     //////FRAMERATE///////

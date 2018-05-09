@@ -12,10 +12,9 @@ public:
     
     void setup(int largeur_, int hauteur_, char toucheDAction, int identifiant);
     void update(int key, ofFbo capture);
-    void variables(float deplacer_, float hue_, float saturation_, float brightness_);
+    void variables(float deplacer_, float hue_, float saturation_, float brightness_, float tailleSouris_);
     void draw(bool jouer, int calque_);
-    void capturer();
-    void jouer();
+
     void vignettes(int i_);
     
     int cardinal();
@@ -25,12 +24,15 @@ public:
     
     ofFbo imageVignette(int n_);
     
-    void cacher();
     void effacer(int key);
+    void effacerVignette(int indice_);
     void afficherCompteur();
     
     void avancer();
     void reculer();
+    void choisir(int x_);
+    void cacher();
+    void montrer();
     
     vector <ofFbo> images;
     ofShader shader;
@@ -43,6 +45,7 @@ public:
     float hue;
     float saturation;
     float brightness;
+    float tailleSouris;
     
     char touche;
     char toucheMaj;

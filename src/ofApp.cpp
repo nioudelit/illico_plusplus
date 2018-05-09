@@ -36,21 +36,22 @@ void ofApp::setup(){
     
     guigui.setup();
     guigui.add(opaciteCam.setup("calque alpha du flux", 0, 0, 255));
-    guigui.add(tagueule.setup("boucler", true));
+    guigui.add(tagueule.setup("boucler", false));
     guigui.add(playStop.setup("play n stop", false));
     guigui.add(vertOuNoir.setup("fond noir ou vert", false));
+    guigui.add(tailleSouris.setup("taille souris", 10, 0, 160));
     guigui.setPosition(10, h);
     //guigui.setBackgroundColor(rouge);
     
     
-    ofSetFrameRate(12);
+    //ofSetFrameRate(12);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     camera.update();
     for(int i = 0; i < n ; i++){
-        animation[i].variables(deplacer, hueV, saturationV, brightnessV);
+        animation[i].variables(deplacer, hueV, saturationV, brightnessV, tailleSouris);
     }
     
     for(int i = 0; i < n; i++){
@@ -66,10 +67,18 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
     plusGrandCardinal();
     ofBackground(0);
     
-    ofFill(); ofSetColor(110, 110, 110);
+    ofFill();
+    ofSetColor(229, 73, 67);
+    ofDrawRectangle(w, 0, ofGetWindowWidth()-w, h/4);
+    if(modeSelect){
+        ofSetColor(229, 73, 67, 150);
+    }else {
+        ofSetColor(80);
+    }
     ofDrawRectangle(w, 0, ofGetWindowWidth() - w, ofGetWindowHeight());
     
     ofSetColor(0, 140, 30);
@@ -77,7 +86,7 @@ void ofApp::draw(){
         animation[i].vignettes(i);
     }
     
-    //camera.draw(w, 0);
+    selecteur();
     ofFill();
     if(vertOuNoir){
         ofSetColor(15, 200, 15);
@@ -88,7 +97,6 @@ void ofApp::draw(){
     
     for(int i = 0; i < n; i++){
         animation[i].draw(tagueule, calqueSup);
-        //animation[i].indiceVignette();
     }
     
     ofSetColor(255, opaciteCam);
@@ -104,8 +112,15 @@ void ofApp::draw(){
     
     
     //TEST VIGNETTE//
-    indiceVignette();
-
+    //indiceVignette();
+    //selecteur();
+    
+    if(ofGetMouseX() < w && ofGetMouseY()< h){
+        ofHideCursor();
+        ofDrawCircle(ofGetMouseX(), ofGetMouseY(), tailleSouris);
+    } else {
+        ofShowCursor();
+    }
 }
 
 //--------------------------------------------------------------
@@ -117,7 +132,7 @@ void ofApp::keyPressed(int key){
         ofSetFrameRate(12);
     }
     if(key == 'v'){
-        ofSetFrameRate(24);
+        ofSetFrameRate(50);
     }
     if(key == OF_KEY_LEFT){
         //cout << "appuyeee" << endl;
@@ -160,8 +175,20 @@ void ofApp::keyReleased(int key){
     if(key == OF_KEY_RIGHT){
         animation[indiceVignette()[1]].avancer();
     }
+    if(key == OF_KEY_DOWN){
+        if(indiceVignette()[1] > 0){
+            //indiceVignette()[1] -=1;
+        }
+    }
+    if(key == OF_KEY_DOWN){
+        
+    }
+    
     if(key == ' '){
         tagueule =! tagueule;
+    }
+    if(key == 'w'){
+        animation[0].effacerVignette(0);
     }
 }
 
@@ -182,9 +209,11 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    modeSelect =! modeSelect;
-    cout << modeSelect << endl;
-    
+    if(ofGetMouseX() > w){
+        modeSelect =! modeSelect;
+        //cout << modeSelect << endl;
+    }
+    animation[indiceVignette()[1]].choisir(indiceVignette()[0]);
 }
 
 //--------------------------------------------------------------
@@ -246,40 +275,31 @@ int ofApp::numeroVignettePointee(int x_){
 
 int * ofApp::indiceVignette(){
     static int posVignette[2];
-    
-    
     unsigned int X = 0;
     
+    
     if(modeSelect == false){
-        X = (ofGetMouseX() - w + deplacer * (-1));
+        int minSouris = ofGetMouseX();
+        if(minSouris <= w){
+            minSouris = w;
+        }
+        X = (minSouris - w + deplacer * (-1));
         X = X / (w/4);
         caseId[0] = X;
     } else {
         X = caseId[0];
     }
     
-    
     unsigned int Y = 0;
     if (modeSelect == false) {
-        ofSetColor(250, 230, 0, 120);
         Y = ofGetMouseY();
-        Y = Y / (h/4);
-        caseId[1] = Y;
+        Y = Y / (h/4); // renvoie des valeurs de 0 ˆ n-1
+        caseId[1] = Y; // sauvarde valeur non permutŽe dans case
     } else {
-        ofSetColor(255, 56);
-        Y = caseId[1];
-        ofDrawRectangle(640, Y * (h/4),
-                        w, h/4);
+        Y = caseId[1];// PERMET D4ALLER LA OU ON VEUT MEME SI Y A RIEN
+        //ZY = n - calqueSup; //PERMET D'ALLER SUR LE CALQUE LE PLUS HAUT AFFICHE SI SELECTIN CALQUE PLUS ABS
+        
     }
-    
-    
-    //DESSINER CASE SELECTIONNEE
-    
-    
-    ofDrawRectangle(X * w/4  + w + deplacer, Y * (h/4),
-                    w/4, h/4);
-    
-    ofSetColor(240, 0, 20);
     
     //ECRIRE VALEURS (+ permutation idcalque)
     Y = n - Y;
@@ -287,13 +307,53 @@ int * ofApp::indiceVignette(){
         Y = n-1;
     }
     
+    if(modeSelect){
+        if(Y < calqueSup){
+            for(int i = calqueSup; i > Y; i--){
+                animation[i].cacher();
+            }
+        } else {
+            for(int i = calqueSup; i <= Y; i++){
+                animation[i].montrer();
+            }
+        }
+    }
+    
+    if(posVignette[0] >= n-1){
+        posVignette[0] = 0;
+    }
+    
     posVignette[0] = X;
     posVignette[1] = Y;
     
-    string msg = "indice vignett: " + ofToString(posVignette[0], 2) + "\n calque num: " + ofToString(posVignette[1], 2);
+    return posVignette;
+}
+
+void ofApp::selecteur(){
+    
+    string msg = "indice vignett: " + ofToString(indiceVignette()[0], 2) + "\n calque num: " + ofToString(indiceVignette()[1], 2);
     ofDrawBitmapString(msg, 1050, 20);
     ofSetColor(255);
     
+    unsigned Y_ = n - indiceVignette()[1];
+    if(modeSelect == false){
+        ofNoFill();
+        //ofSetLineWidth(10);
+        ofSetColor(255, 255, 0);
+        ofDrawRectangle(w + indiceVignette()[0] * (w/4) + deplacer, Y_ * (h/4), w/4, h/4);
+        ofFill();
+        ofSetColor(255, 60);
+    } else {
+        //ofFill();
+        //ofSetRectangleWidth(10);
+        //ofSetColor(255, 255, 10, 60);
+        //ofDrawRectangle(w, Y_ * (h/4),
+         //               w, h/4);
+        ofNoFill();
+        ofSetColor(255, 0, 0);
+        ofDrawRectangle(w + indiceVignette()[0] * (w/4) + deplacer, Y_ * (h/4), w/4, h/4);
+    }
     
-    return posVignette;
+    /*ofDrawRectangle(w, Y_ * (h/4),
+                    w, h/4);*/
 }
