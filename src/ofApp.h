@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxGifEncoder.h"
+#include "ofxSimpleScreenRecorder.h"
 #include "Animation.h"
 #include "Vignette.h"
 
@@ -27,12 +28,14 @@ public:
     
     void obtenirFrameRate();
     void plusGrandCardinal();
+    int taillePlusGrandeBoucle();
     int numeroVignettePointee(int x_);
     int * indiceVignette();
     void selecteur();
     
     void onGifSaved(string & fileName);
     void exit();
+    void exportImages(int i);
     
     
     int w;
@@ -68,12 +71,20 @@ public:
     
     
     bool modeSuppr;
+    bool modeVert;
     bool vueCamera;
     bool sendData;
     char raccourcis[5] = {'a', 'z', 'e', 'r', 't'};
     
     bool modeSelect = false;
     int caseId[2] = {0, 0};
+    
+   // ofImage sortie;
+    string nomSortie = "";
+    string laDate = "";
+    bool sauvEnCours = false;
+    unsigned int curr = 0;
+    unsigned int dav = 0;
     
     
     /*
@@ -96,11 +107,11 @@ public:
      CHANGER ORDRE DES CALQUES
     - Retourner camera ?
     - parametrer camera
-    - VOir quel calcque est caché ou non
+
     - remettre toutes les barres compteurs a 
      - Spécifier quels calques peuvent être «fondverisés»
-     - Stoper boucle (play/stop)
-     - Avancer/reculer image/par image >>
+
+
      - Remettre à zéro compteur
      - Jouer sans boucler.
      - Pouvoir choisir une image disD
@@ -111,6 +122,9 @@ public:
      - Dupliquer images
      
      - Apercu fond vert incruste webcam flux
+     - Incrustation fond Vert Adaptatif
+     
+     -changer vitesse sans changer framerate;
      
     CLASSE SORTIE
      
@@ -119,7 +133,7 @@ public:
      - exporter séquence
      - sauvegarder (banderoles?) --> importer exporter suite images
      - gif ffmpeg
-
+     - FLOUTER CALQUE
      
      Niou version de l'illico-cinoche (soft fait initialement pour l'impro visuelle en direct). Ce prototype, moins axé «live», permet de créer rapido des ptites séquences animées via flux webcam, calques et fond vert. #lowFi #cadavreExquisAnimé #openframeworks
      http://completement.pt/dqsdqsdsd
@@ -131,8 +145,6 @@ public:
      Pour l'instant c'eest compilé sur mac, mais je ferais un ptit export pour linuss. La version linuss aura une fonction en plus assez pratique: gestion de la webcam (uvc).
      
      Ce n'est pas un logiel de montage, juste un «banc-titre» pour animer des choses.
-     
-     
     */
 
     

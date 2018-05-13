@@ -21,8 +21,8 @@ public:
     int numeroVignettePointee(int x_);
     int indiceVignette();
     bool estJoue();
+    void fondVert();
     
-    ofFbo imageVignette(int n_);
     
     void effacer(int key);
     void effacerVignette(int indice_);
@@ -34,8 +34,10 @@ public:
     void cacher();
     void montrer();
     
-    void onGifSaved(string & fileName);
-    void exit();
+   
+    
+    //void onGifSaved(string & fileName);
+    //void exit();
     
     vector <ofFbo> images;
     ofShader shader;
@@ -53,6 +55,7 @@ public:
     char touche;
     char toucheMaj;
     bool seJoue = false;
+    bool incrustation = true;
     int largeur;
     int hauteur;
     

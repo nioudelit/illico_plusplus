@@ -30,8 +30,12 @@ void Animation::update(int key, ofFbo capture){
     } else if (key == touche){
         seJoue =! seJoue;
     }
-    
-    
+}
+
+void Animation::fondVert(){
+    //if(key == toucheMaj){
+        incrustation =! incrustation;
+    //}
 }
 
 void Animation::variables(float deplacer_, float hue_, float saturation_, float brightness_, float tailleSouris_){
@@ -64,6 +68,7 @@ void Animation::draw(bool jouer, int calque_){
             images[compteur].end();
         }
         
+        if(incrustation){
         shader.begin();
         //shader.setUniform1f("h", ofMap(0, 0, ofGetWindowWidth(), 0.0, 1.0));
         //shader.setUniform1f("s", ofMap(0, 0, ofGetWindowHeight(), 0.0, 1.0));
@@ -73,6 +78,17 @@ void Animation::draw(bool jouer, int calque_){
         shader.setUniformTexture("tex0", images[compteur].getTexture(), id_);
         images[compteur].draw(0, 0);
         shader.end();
+        } else {
+            shader.begin();
+            //shader.setUniform1f("h", ofMap(0, 0, ofGetWindowWidth(), 0.0, 1.0));
+            //shader.setUniform1f("s", ofMap(0, 0, ofGetWindowHeight(), 0.0, 1.0));
+            shader.setUniform1f("h", 0);
+            shader.setUniform1f("s", 0);
+            shader.setUniform1f("b", 0);
+            shader.setUniformTexture("tex0", images[compteur].getTexture(), id_);
+            images[compteur].draw(0, 0);
+            shader.end();
+        }
         
     }
     afficherCompteur();
@@ -98,7 +114,7 @@ void Animation::vignettes(int i_){
     if(seJoue){
         ofSetColor(255);
     } else {
-        ofSetColor(255, 20);
+        ofSetColor(255, 65);
     }
     
     for(int i = 0; i < images.size(); i++){
@@ -108,12 +124,20 @@ void Animation::vignettes(int i_){
         ofSetColor(255, 0, 0);
         ofDrawLine(largeur + compteur * largeur/4 + 50, (5 - i_) * hauteur/4,
                largeur + compteur * largeur/4 + 50, (5 - i_) * hauteur/4 + hauteur/4);
+        if(incrustation){
+            ofSetColor(0, 250, 0);
+        } else {
+            ofSetColor(0, 250, 0, 70);
+        }
+        ofDrawRectangle(largeur, (5 - i_) * hauteur/4,
+                   30, 15);
     }
     
     
     ofSetColor(255);
     //string msg = "position relative souris: " + ofToString(ofGetMouseX() + deplacer * (-1), 2);
     ofPopMatrix();
+    
     
     //ofDrawBitmapString(msg, 640, 480);
 }
@@ -175,14 +199,11 @@ int Animation::numeroVignettePointee(int x_){
     return x_;
 }
 
-ofFbo Animation::imageVignette(int n_){
-    return images[n_];
-}
 
 
 void Animation::afficherCompteur(){
     //////FRAMERATE///////
     ofSetColor(255);
     string msg = "fps: " + ofToString(compteur, 2);
-    ofDrawBitmapString(msg, 10, id_ * 10 + 30);
+    ofDrawBitmapString(msg, 10 + largeur/2, id_ * 10 + 30 + hauteur);
 }

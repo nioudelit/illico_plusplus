@@ -7,6 +7,9 @@ void ofApp::setup(){
     w = 640;
     h = 420;
     
+    //w *= 1.5;
+    //h *= 1.5;
+    
     //camera.listDevices();
     camera.setDeviceID(0); // ou 2 pour firewire
     camera.initGrabber(w, h);
@@ -47,8 +50,13 @@ void ofApp::setup(){
     gifEncoder.setup(w, h, 0.25f, 16);
     ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &ofApp::onGifSaved);
     
+    //SORTIES SUITES IMAGES
+    laDate = ofToString(ofGetYear()) + "_" + ofToString(ofGetMonth())
+                        + "_" + ofToString(ofGetDay()) + "__" + ofToString(ofGetHours())
+                        + " " + ofToString(ofGetMinutes()) + " " + ofToString(ofGetSeconds());
+    cout << laDate << endl;
+    
     //ofSetFrameRate(12);
-    cout << float(0.1f) << endl;
 }
 
 //--------------------------------------------------------------
@@ -64,6 +72,11 @@ void ofApp::update(){
                 calqueSup = i;
                 calqueSupTemp = calqueSup;
             }
+        }
+    }
+    if(playStop){
+        for(int i = 0; i < n; i++){
+            animation[i].choisir(indiceVignette()[0]);
         }
     }
     //cout << "plus haut calque visible" << calqueSup << endl;
@@ -125,12 +138,19 @@ void ofApp::draw(){
     } else {
         ofShowCursor();
     }
+    
+    if(sauvEnCours){
+        exportImages(curr);
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if(key == 'x'){
         modeSuppr = true;
+    }
+    if(key == 'w'){
+        modeVert = true;
     }
     if(key == 'c'){
         ofSetFrameRate(12);
@@ -151,8 +171,8 @@ void ofApp::keyPressed(int key){
      */
     if(key == 'w'){
         //animation[0].effacerVignette(0);
-        imgSauvegarde.grabScreen(0, 0, w, h);
-        gifEncoder.addFrame(imgSauvegarde, 0.1f);
+        //imgSauvegarde.grabScreen(0, 0, w, h);
+        //gifEncoder.addFrame(imgSauvegarde, 0.1f);
     }
 }
 
@@ -178,6 +198,7 @@ void ofApp::keyReleased(int key){
     }
     modeSuppr = false;
     
+    
     if(key == OF_KEY_LEFT){
         animation[indiceVignette()[1]].reculer();
     }
@@ -202,9 +223,23 @@ void ofApp::keyReleased(int key){
         //imgSauvegarde.grabScreen(0, 0, w, h);
         //gifEncoder.addFrame(imgSauvegarde, 100);
     }
+    //GIF
     if(key == 'l'){
         gifEncoder.save("couilllle.gif");
         //gifEncoder.exit();
+    }
+    //RECORD SUITE IMG
+    if(key == 'o'){
+        sauvEnCours = true;
+        /*
+        int i = 0;
+        while(i < taillePlusGrandeBoucle()){
+            ofImage sortie;
+            sortie.grabScreen(0, 0, w, h);
+            sortie.save(laDate + "/" + ofToString(i) + ".jpg", OF_IMAGE_QUALITY_WORST);
+            i++;
+        }
+         */
     }
 }
 
@@ -225,11 +260,16 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    if(ofGetMouseX() > w){
-        modeSelect =! modeSelect;
+    if(button == OF_MOUSE_BUTTON_LEFT){
+        if(ofGetMouseX() > w){
+            modeSelect =! modeSelect;
         //cout << modeSelect << endl;
+        }
     }
     animation[indiceVignette()[1]].choisir(indiceVignette()[0]);
+    if(button == OF_MOUSE_BUTTON_RIGHT){
+        animation[indiceVignette()[1]].fondVert();
+    }
 }
 
 //--------------------------------------------------------------
@@ -261,10 +301,10 @@ void ofApp::obtenirFrameRate(){
     //////FRAMERATE///////
     ofSetColor(255);
     string msg = "fps: " + ofToString(ofGetFrameRate(), 2);
-    ofDrawBitmapString(msg, 10, 20);
+    ofDrawBitmapString(msg, w/3, 20 + h);
     //ETAT VARIABLE EFFACER
-    string msgETAT = "ETAT: " + ofToString(modeSuppr, 2);
-    ofDrawBitmapString(msgETAT, 100, 50);
+    //string msgETAT = "ETAT: " + ofToString(modeSuppr, 2);
+    //ofDrawBitmapString(msgETAT, 100, 50);
 }
 
 void ofApp::plusGrandCardinal(){
@@ -279,9 +319,22 @@ void ofApp::plusGrandCardinal(){
             temp = c[i];
         }
     }
-    
     deplacer.setMin(temp * w/4 * (-1) + w/4);
+}
+
+int ofApp::taillePlusGrandeBoucle(){
+    int c [] = {0, 0, 0, 0, 0};
+    for(int i = 0; i < n; i++){
+        c[i] = animation[i].cardinal();
+    }
+    int temp = 0;
     
+    for(int i = 0; i < n; i++){
+        if(c[i]>temp){
+            temp = c[i];
+        }
+    }
+    return temp;
 }
 
 int ofApp::numeroVignettePointee(int x_){
@@ -383,4 +436,19 @@ void ofApp::onGifSaved(string &fileName) {
 
 void ofApp::exit() {
     gifEncoder.exit();
+}
+
+/////EXPORT IMG/////
+
+void ofApp::exportImages(int i){
+    ofImage sortie;
+    sortie.grabScreen(0, 0, w, h);
+    //sortie.save(laDate + "/" + ofToString(i) + ".jpg", OF_IMAGE_QUALITY_WORST);
+    sortie.save(laDate + ofToString(dav) + "/" + ofToString(i) + ".jpg");
+    curr++;
+    if(curr >= taillePlusGrandeBoucle() * 2){
+        sauvEnCours = false;
+        dav += 1;
+        curr = 0;
+    }
 }

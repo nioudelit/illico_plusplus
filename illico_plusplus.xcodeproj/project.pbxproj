@@ -65,6 +65,7 @@
 		89449E3044D456F7DE7BEA14 /* ofxPanel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPanel.h; path = ../../../addons/ofxGui/src/ofxPanel.h; sourceTree = SOURCE_ROOT; };
 		907C5B5E104864A2D3A25745 /* ofxToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxToggle.cpp; path = ../../../addons/ofxGui/src/ofxToggle.cpp; sourceTree = SOURCE_ROOT; };
 		9604B925D32EE39065747725 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = ../../../addons/ofxGui/src/ofxBaseGui.cpp; sourceTree = SOURCE_ROOT; };
+		9720D95B20A3814E00287EB5 /* ofxSimpleScreenRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSimpleScreenRecorder.h; sourceTree = "<group>"; };
 		9788BBD82027273A000E1169 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		9795CDC520A0718400A95133 /* Vignette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vignette.cpp; sourceTree = "<group>"; };
 		9795CDC620A0718400A95133 /* Vignette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vignette.h; sourceTree = "<group>"; };
@@ -115,6 +116,14 @@
 			name = local_addons;
 			sourceTree = "<group>";
 		};
+		9720D95A20A3814E00287EB5 /* ofxSimpleScreenRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				9720D95B20A3814E00287EB5 /* ofxSimpleScreenRecorder.h */,
+			);
+			path = ofxSimpleScreenRecorder;
+			sourceTree = "<group>";
+		};
 		97996E3C20A352AA00F08AA8 /* ofxGifEncoder */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +169,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				9720D95A20A3814E00287EB5 /* ofxSimpleScreenRecorder */,
 				97996E3C20A352AA00F08AA8 /* ofxGifEncoder */,
 				480A780D8D0308AE4A368801 /* ofxGui */,
 			);

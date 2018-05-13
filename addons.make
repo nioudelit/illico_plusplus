@@ -1,3 +1,4 @@
 ofxGui
 ofxGuiExtended
 ofxGifEncoder
+ofxSimpleScreenRecorder
